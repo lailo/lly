@@ -214,4 +214,11 @@ stable channel.
 
 ## License
 
-Personal-use tool, no license declared. Adapt as you wish.
+MIT, with the [Commons Clause](https://commonsclause.com/) condition layered
+on top — see [`LICENSE`](LICENSE). In plain English: use it, fork it, modify
+it, distribute it freely; just don't **sell** it (or a hosted/consulting
+service whose value derives substantially from it). Personal and internal use
+at your company is fine.
+
+Note: the Commons Clause makes this _source-available_, not OSI-approved open
+source.

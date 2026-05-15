@@ -6,6 +6,7 @@ readme = "README.md"
 authors = [
     { name = "Lailo", email = "me@lailo.ch" }
 ]
+license = { file = "LICENSE" }
 requires-python = ">=3.12"
 dependencies = [
     "httpx[http2]>=0.28.1",
