@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.debugpy",
+    "charliermarsh.ruff",
+    "ms-python.mypy-type-checker",
+    "tamasfe.even-better-toml"
+  ],
+  "unwantedRecommendations": [
+    "detachhead.basedpyright",
+    "anysphere.cursorpyright",
+    "ms-python.pylint",
+    "ms-python.black-formatter",
+    "ms-python.isort"
+  ]
+}

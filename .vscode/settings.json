@@ -1,0 +1,59 @@
+{
+  // Use the uv-managed virtualenv
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+
+  // --- Disable Cursor's built-in basedpyright fork (anysphere.cursorpyright)
+  // Cursor uses the `cursorpyright.*` prefix, NOT `basedpyright.*`.
+  "cursorpyright.disableLanguageServices": true,
+  "cursorpyright.disableOrganizeImports": true,
+  "cursorpyright.analysis.typeCheckingMode": "off",
+  "cursorpyright.analysis.diagnosticMode": "openFilesOnly",
+  "cursorpyright.analysis.ignore": ["**/*"],
+
+  // Belt-and-braces for the original basedpyright extension if it's also installed.
+  "basedpyright.disableLanguageServices": true,
+  "basedpyright.disableOrganizeImports": true,
+  "basedpyright.analysis.typeCheckingMode": "off",
+  "basedpyright.analysis.ignore": ["**/*"],
+
+  // Disable Pylance/Pyright too — we want mypy + ruff to be the only checkers.
+  "python.analysis.typeCheckingMode": "off",
+  "python.languageServer": "None",
+
+  // --- Ruff: lint + format + import sorting -------------------------------
+  "ruff.enable": true,
+  "ruff.importStrategy": "fromEnvironment",
+  "ruff.nativeServer": "on",
+  "ruff.lint.enable": true,
+  "ruff.organizeImports": true,
+  "ruff.fixAll": true,
+
+  // Use Ruff as the formatter for Python files
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+
+  // --- Mypy (run on save via the official extension) ----------------------
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "mypy-type-checker.preferDaemon": true,
+  "mypy-type-checker.args": ["--config-file=pyproject.toml"],
+
+  // --- Pytest -------------------------------------------------------------
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": ["tests"],
+
+  // Misc
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true,
+    "**/.mypy_cache": true
+  }
+}
