@@ -534,6 +534,7 @@ async def test_main_screen_sort_by_column_toggles_direction(
         )
         for tag, name, n in [("aaa", "Charlie", 30), ("bbb", "Alice", 10), ("ccc", "Bob", 20)]
     ]
+
     def _load_devices() -> list[Device]:
         return list(devs)
 

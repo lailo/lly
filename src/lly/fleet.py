@@ -115,9 +115,7 @@ async def refresh_statuses(
                 host=device.host,
                 error=message,
             )
-            return device.id, DeviceStatus(
-                online=False, kind=DeviceKind.OTHER, error=message
-            )
+            return device.id, DeviceStatus(online=False, kind=DeviceKind.OTHER, error=message)
 
     results = await asyncio.gather(*(one(d) for d in devices))
     return dict(results)

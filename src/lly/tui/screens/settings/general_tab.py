@@ -50,9 +50,7 @@ class GeneralTab(TabPane):
             yield Label("Request timeout (s)")
             yield Input(value=str(s.request_timeout_s), id="request_timeout_s", type="number")
             yield Label("Refresh concurrency")
-            yield Input(
-                value=str(s.refresh_concurrency), id="refresh_concurrency", type="integer"
-            )
+            yield Input(value=str(s.refresh_concurrency), id="refresh_concurrency", type="integer")
 
         with Horizontal(classes="button-row"):
             yield Button("Save (ctrl+s)", id="settings-save", variant="primary")

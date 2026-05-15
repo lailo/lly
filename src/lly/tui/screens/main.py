@@ -152,9 +152,7 @@ class MainScreen(Screen[None]):
         """Device ids in current sort order; unsorted is insertion order."""
         if self._sort_by is None:
             return list(self._devices)
-        return sorted(
-            self._devices, key=self._sort_key_for(self._sort_by), reverse=self._sort_desc
-        )
+        return sorted(self._devices, key=self._sort_key_for(self._sort_by), reverse=self._sort_desc)
 
     def _sort_key_for(self, column: str) -> Callable[[str], Any]:
         """Build a key function that maps a device id to its sortable value."""
