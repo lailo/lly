@@ -11,6 +11,7 @@ from pydantic import SecretStr
 from rich.console import Console
 from rich.table import Table
 
+from lly import __version__
 from lly.config import (
     devices_path,
     load_devices,
@@ -37,8 +38,26 @@ app.add_typer(action_app, name="action")
 console = Console()
 
 
+def _version_callback(value: bool) -> None:
+    if value:
+        console.print(f"lly {__version__}")
+        raise typer.Exit
+
+
 @app.callback(invoke_without_command=True)
-def main(ctx: typer.Context) -> None:
+def main(
+    ctx: typer.Context,
+    _version: Annotated[
+        bool,
+        typer.Option(
+            "--version",
+            "-V",
+            callback=_version_callback,
+            is_eager=True,
+            help="Show version and exit.",
+        ),
+    ] = False,
+) -> None:
     if ctx.invoked_subcommand is None:
         from lly.tui.app import run
 

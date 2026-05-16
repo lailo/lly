@@ -17,33 +17,49 @@ A small, fully-typed Python CLI + TUI to discover and manage your
 ## Requirements
 
 - macOS or Linux
-- [`uv`](https://docs.astral.sh/uv/) installed
-  ```sh
-  curl -LsSf https://astral.sh/uv/install.sh | sh
-  ```
-- Python 3.12+ (uv will install it for you on first run if missing)
 - Your Shellies reachable on the same L2 network (mDNS must not be blocked
   between your machine and the devices — VLAN segregation often breaks this)
 
-## Install / first run
+## Install
 
-From the project root:
+### Homebrew (macOS, recommended for end users)
 
 ```sh
+brew tap lailo/tap
+brew install lly
+lly --help
+```
+
+No Python required. The binary is self-contained.
+
+### Manual download (macOS, Apple Silicon)
+
+Grab `lly-darwin-arm64.tar.gz` from the
+[latest release](https://github.com/lailo/lly/releases/latest), extract, and
+put `lly` on your `$PATH`. Intel Macs are not currently built — install from
+source.
+
+### From source
+
+Requires [`uv`](https://docs.astral.sh/uv/):
+
+```sh
+curl -LsSf https://astral.sh/uv/install.sh | sh   # if you don't have uv yet
+git clone https://github.com/lailo/lly.git
+cd lly
 uv sync               # installs deps into .venv
 uv run lly --help     # check the CLI is wired up
 ```
 
-That's it — no `pip install`, no global state. Every command below is run via
-`uv run`.
-
-If you want a bare `lly` command on your `$PATH`, install the package as a uv
-tool:
+For a bare `lly` command on your `$PATH` (Linux):
 
 ```sh
 uv tool install --editable .
 lly --help
 ```
+
+Every `uv run lly ...` example below also works as plain `lly ...` after
+either install path.
 
 ## Configure your default password
 
@@ -169,23 +185,6 @@ uv run pytest -q                 # tests (25 of them, all offline)
 The codebase is `from __future__ import annotations` everywhere, `mypy
 --strict`, and tested with `respx` mocks for the HTTP layer and `MagicMock`
 fakes for `zeroconf`. No real network is needed to run the test suite.
-
-Project layout:
-
-```
-src/lly/
-├── cli.py              # Typer entry point (`lly`)
-├── config.py           # XDG paths, atomic TOML I/O, merge logic
-├── discovery.py        # async zeroconf scanner for _shelly._tcp.local.
-├── fleet.py            # parallel status refresh + bulk action runners
-├── models.py           # Pydantic models, kind inference
-├── shelly/
-│   ├── client.py       # httpx async client with Digest auth + RPC envelope
-│   └── rpc.py          # typed wrappers: GetStatus, Reboot, Update, ...
-└── tui/
-    ├── app.py
-    └── screens/        # MainScreen, ScanScreen, BulkScreen
-```
 
 ## Troubleshooting
 

@@ -6,5 +6,8 @@ dist/
 wheels/
 *.egg-info
 
+# PyInstaller
+*.spec
+
 # Virtual environments
 .venv

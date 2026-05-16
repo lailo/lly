@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    name: Build darwin-arm64
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+          enable-cache: true
+
+      - name: Derive version from tag
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: echo "LLY_VERSION=${REF_NAME#v}" >> "$GITHUB_ENV"
+
+      - name: Build single-file binary
+        run: ./scripts/build-binary.sh
+
+      - name: Smoke test
+        run: ./dist/lly --version
+
+      - name: Package
+        run: |
+          cd dist
+          tar -czf lly-darwin-arm64.tar.gz lly
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lly-darwin-arm64
+          path: dist/lly-darwin-arm64.tar.gz
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.tar.gz
+          generate_release_notes: true
+
+  bump-tap:
+    name: Bump Homebrew formula
+    needs: release
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.ref, '-') }}
+    steps:
+      - uses: mislav/bump-homebrew-formula-action@v3
+        with:
+          formula-name: lly
+          formula-path: Formula/lly.rb
+          homebrew-tap: lailo/homebrew-tap
+          base-branch: main
+          create-pullrequest: false
+          download-url: https://github.com/lailo/lly/releases/download/${{ github.ref_name }}/lly-darwin-arm64.tar.gz
+          commit-message: "lly ${{ github.ref_name }}"
+        env:
+          COMMITTER_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
